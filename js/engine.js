@@ -9,8 +9,9 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine makes the canvas' context (ctx) object globally available to make 
- * writing app.js a little simpler to work with.
+ * This engine is available globally via the Engine variable and it also makes
+ * the canvas' context (ctx) object globally available to make writing app.js
+ * a little simpler to work with.
  */
 
 var Engine = (function(global) {
@@ -25,7 +26,7 @@ var Engine = (function(global) {
         lastTime;
 
     canvas.width = 505;
-    canvas.height = 606;
+    canvas.height = 650;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -46,6 +47,8 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
+
+
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -94,6 +97,9 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        allGems.forEach(function(gem) {
+            gem.update(dt);
+        });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -117,9 +123,6 @@ var Engine = (function(global) {
             numRows = 6,
             numCols = 5,
             row, col;
-        
-        // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height)
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
@@ -154,6 +157,45 @@ var Engine = (function(global) {
         });
 
         player.render();
+
+        allGems.forEach(function(gem) {
+            gem.render();
+        });
+
+        allRocks.forEach(function(rock) {
+            rock.render();
+        });
+
+    // Drawing on the canvas
+      ctx.clearRect(0, 0, canvas.width, 40);
+      ctx.clearRect(440, 600, 70, 40);
+      ctx.clearRect(70, 600, 200, 40);
+      ctx.font = '16px Courier New';
+      ctx.fillStyle = "white";
+      ctx.strokeStyle = "white";
+      ctx.fillText('Crosses/Streak  ', 0, 30);
+      ctx.fillText('Score' , 380, 30);
+      ctx.font = '20px Courier New';
+      ctx.strokeText(crosses + "/" + streak, 150, 32);
+      ctx.font = '24px Courier New';
+      ctx.strokeText(score, 440, 32);
+      ctx.fillText('x ' + life, 440, 630);
+      ctx.fillText('x ' + starActivation, 75, 630);
+
+
+    // Inserting Images in the Canvas
+      var img = new Image();                // Heart.png
+      img.onload = function(){
+        ctx.drawImage(img, 390, 585, 40, 70);
+      };
+      img.src = 'images/Heart.png';
+
+      var imgStar = new Image();            // Star.png
+      imgStar.onload = function(){
+        ctx.drawImage(imgStar, 20, 580, 45, 70);
+      };
+      imgStar.src = 'images/Star.png';
+
     }
 
     /* This function does nothing but it could have been a good place to
@@ -168,12 +210,23 @@ var Engine = (function(global) {
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
      */
+
     Resources.load([
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/Rock.png',
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/Heart.png',
+        'images/Gem-Blue.png',
+        'images/Gem-Green.png',
+        'images/Gem-Orange.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 
@@ -182,4 +235,4 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
-})(this);
+});
