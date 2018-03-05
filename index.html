@@ -1,11 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <title>Frogger: Arcade Game</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div id="introduction">
+        <div class="intro-container">
+            <div class="intro-item">
+                <h2>How To Play</h2>
+                <div class="intro-desc">
+                    <p>Earn points by getting your player across to the water. On the way avoid the bugs and rocks all while collecting gems and stars.</p>
+                    <p class="question">How many times can you make it across?</p>
+                    <p class="question">Can you beat your highest score?</p>
+                </div>
+            </div>
+            <div class="intro-item">
+              <!--Section renders the buttons to move-->
+                <h2>Buttons</h2>
+                <div class="arrow-grid">
+                    <div class="up">
+                      <img src="images/Arrow-Up.png" alt="Up" class="keys">
+                    </div>
+                    <div class="left">
+                      <img src="images/Arrow-Left.png" alt="Left" class="keys">
+                    </div>
+                    <div class="down">
+                      <img src="images/Arrow-Down.png" alt="Down" class="keys">
+                    </div>
+                    <div class="right">
+                      <img src="images/Arrow-Right.png" alt="Right" class="keys">
+                    </div>
+                    <div class="arrows-desc">Move Player</div>
+                </div>
+                <!--Section renders special buttons-->
+                <div class="buttons-grid">
+                    <div class="star">
+                      <img src="images/key-s.png" alt="Star" class="keys">
+                    </div>
+                    <div class="star-desc">Activates Star</div>
+                </div>
+                <div class="buttons-grid">
+                    <div class="restart">
+                      <img src="images/key-R.png" alt="Restart" class="keys">
+                    </div>
+                    <div class="restart-desc">Restart the Game</div>
+                </div>
+            </div>
+        </div>
+        <!--Section to render and choose your player-->
+        <div id="player-selection">
+            <h2 id="chars-title">Select your Player</h2>
+            <button class="chars" onclick="selectChar('images/char-boy.png')" onmouseover="charHover()">
+              <img src="images/char-boy.png" alt="boy character">
+              <span class="char-names"><br><em>Boy</em></span>
+            </button>
+            <button class="chars" onclick="selectChar('images/char-cat-girl.png')" onmouseover="charHover()">
+              <img src="images/char-cat-girl.png" alt="cat girl character">
+              <span class="char-names"><br><em>Cat Girl</em></span>
+            </button>
+            <button class="chars" onclick="selectChar('images/char-horn-girl.png')" onmouseover="charHover()">
+              <img src="images/char-horn-girl.png" alt="horn girl character">
+                <span class="char-names"><br><em>Horn Girl</em></span>
+            </button>
+            <button class="chars" onclick="selectChar('images/char-pink-girl.png')" onmouseover="charHover()">
+              <img src="images/char-pink-girl.png" alt="pink girl character">
+              <span class="char-names"><br><em>Pink Girl</em></span>
+            </button>
+            <button class="chars" onclick="selectChar('images/char-princess-girl.png')" onmouseover="charHover()">
+              <img src="images/char-princess-girl.png" alt="princess girl character">
+              <span class="char-names"><br><em>Princess</em></span>
+            </button>
+            <!-- Play Game button -->
+            <div>
+                <h4 id="player-selected"> </h4>
+                <button onclick="startGame()" class="play-game">Play Game</button>
+            </div>
+        </div>
+        <!-- Score in Game section -->
+        <div id="game-info">
+            <h2 class="info-head">Score System</h2>
+            <div class="info">
+              <!-- Points for crossing section -->
+              <div class="info-items crosses">
+                  <h4>Crossing</h4>
+                  <div class="list-items">For every successful Cross 10 points will be rewarded.</div>
+                  <div class="list-items">However, if you have crossed more than:
+                    <p class="justify"><strong>20 times</strong> - each cross rewards <strong>20</strong> points.</p>
+                    <p class="justify"><strong>30 times</strong> - each cross rewards <strong>30</strong> points.</p>
+                    <p class="justify"><strong>40 times</strong> - each cross rewards <strong>40</strong> points.</p>
+                  </div>
+                </div>
+                <!-- Gem point section -->
+                <div class="info-items gems ">
+                  <h4>Gems</h4>
+                  <div class="justify">Collect as many Gems as possible to increase your Score on the way to the swimming pool.</div>
+                  <div class="info-list">
+                    <div class="info-list-items">
+                      <img src="images/Gem-Orange.png" alt="Orange Gem"><span class="gems">Orange</span> Gem: 100 points</span>
+                    </div>
+                    <div class="info-list-items">
+                      <img src="images/Gem-Green.png" alt="Green Gem"><span class="gems">Green Gem: 200 points</span>
+                    </div>
+                    <div class="info-list-items">
+                      <img src="images/Gem-Blue.png" alt="Blue Gem"><span class="gems">Blue Gem: 300 points</span>
+                    </div>
+                  </div>
+                </div>
+                <!--Section for steaks -->
+                <div class="info-items streak">
+                  <h4>Streak</h4>
+                  <div class="list-items">Keep your Streak of crossing to the swiming pool as high as possible to multiple your score.</div>
+                  <div class="list-items">Streak higher than:
+                      <p class="justify"><strong>10</strong> double the points you earn.</p>
+                      <p class="justify"><strong>20</strong> triples the points you earn.</p>
+                      <p class="justify"><strong>30</strong> quadruples the points you earn.</p>
+                  </div>
+                </div>
+                <!-- Stay Alive Section -->
+                <div class="info-items keep-alive">
+                    <h4>Stay Alive</h4>
+                    <div class="keep-alive-grid">
+                        <div class="ka-desc justify">You will start with 5 Hearts. Collect more Hearts and the Stars along the way to live longer...</div>
+                        <div class="info-list">
+                            <div class="info-list-items ka justify">
+                              <img src="images/Heart.png" alt="Heart"><span class="gems heart">Once your Heart gets to 0 you cannot be bitten by a bug anymore. If so Game Over!! </span>
+                            </div>
+                            <div class="info-list-items ka justify">
+                              <img src="images/Star.png" alt="Star"><span class="gems">Star gives you a temporary invincibility. For 5 seconds Bugs won't be able to bite you and you will be able to climb over the rocks. Use it wisely. Hint: There can be too many rocks on your way!!!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Section -->
+        <footer id="footer">
+            <div class="credit">Udacity Project - Frogger: Arcade Game by <a href="">Danny McCormick</a></div>
+        </footer>
+    </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
